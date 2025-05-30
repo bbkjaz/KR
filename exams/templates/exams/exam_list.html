@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список экзаменов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .exam {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .exam img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+        .field-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Список опубликованных экзаменов</h1>
+        <p>Студент: {{ fio }}</p>
+        <p>Группа: {{ group }}</p>
+    </div>
+
+    {% if exams %}
+        {% for exam in exams %}
+            <div class="exam">
+                <h2>{{ exam.title }}</h2>
+                
+                <p class="field-label">Дата создания:</p>
+                <p>{{ exam.created_date }}</p>
+                
+                <p class="field-label">Дата проведения экзамена:</p>
+                <p>{{ exam.exam_date }}</p>
+                
+                {% if exam.image %}
+                    <p class="field-label">Изображение задания:</p>
+                    <img src="{{ exam.image.url }}" alt="Изображение задания">
+                {% endif %}
+                
+                <p class="field-label">Пользователи:</p>
+                <ul>
+                    {% for user in exam.users.all %}
+                        <li>{{ user.username }} ({{ user.email }})</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Нет опубликованных экзаменов.</p>
+    {% endif %}
+</body>
+</html>
